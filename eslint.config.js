@@ -14,14 +14,26 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/**/*'],
     linterOptions: {
       reportUnusedDisableDirectives: true,
+    }
+  },
+  // Special config for build configuration files - placing this first to take precedence
+  {
+    files: ['vite.config.ts', 'msw.config.ts'],
+    ...tseslint.configs.recommended,
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.node.json'
+      }
     }
   },
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['vite.config.ts', 'msw.config.ts'],
     extends: [
       ...compat.extends(
         'plugin:react/recommended',
