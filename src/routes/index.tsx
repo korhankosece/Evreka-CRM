@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+
 import { Layout } from '../layouts';
 import { UserListPage, UserDetailPage } from '../pages';
 
