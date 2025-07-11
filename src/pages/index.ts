@@ -1,2 +1,2 @@
-export { default as UserListPage } from './UserListPage';
-export { default as UserDetailPage } from './UserDetailPage';
+export { default as UserDetailPage } from './UserDetail';
+export { default as UserListPage } from './UserList';
