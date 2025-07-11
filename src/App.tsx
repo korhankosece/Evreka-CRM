@@ -3,8 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from './styles/GlobalStyles';
-import { theme } from './styles/theme';
+import { GlobalStyles, theme } from './styles';
 
 const App = () => {
   return (
