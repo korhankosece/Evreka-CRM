@@ -1,4 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
 import Table from '../../components/common/Table';
 import StatusBadge from '../../components/common/StatusBadge';
 import Button from '../../components/common/Button';
@@ -6,35 +7,7 @@ import Button from '../../components/common/Button';
 import { useUsers } from '../../hooks';
 import { User } from '../../types';
 
-import styled from 'styled-components';
-
-const PageContainer = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: ${({ theme }) => theme.colors.background.default};
-`;
-
-const PageContent = styled.div`
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.text.primary};
-`;
-
-const TableContainer = styled.div`
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-`;
+import { PageContainer, PageContent, TableContainer, Title } from './UserList.styles';
 
 const UserList = () => {
   const navigate = useNavigate();

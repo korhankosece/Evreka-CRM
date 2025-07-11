@@ -6,6 +6,10 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  createdAt: Date;
   status: UserStatus;
+  createdAt: Date;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
 }

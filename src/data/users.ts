@@ -13,5 +13,9 @@ export const users: User[] = Array.from({ length: 5000 }, () => {
     role: faker.helpers.arrayElement(['admin', 'user']),
     status: faker.helpers.arrayElement(['active', 'inactive']),
     createdAt: faker.date.past({ years: 2 }),
+    coordinates: {
+      lat: faker.location.latitude(),
+      lng: faker.location.longitude(),
+    },
   };
 });
