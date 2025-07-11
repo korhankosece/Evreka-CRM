@@ -8,9 +8,14 @@ import type { User } from '../types/user';
 interface UseUsersProps {
   initialPage?: number;
   initialPerPage?: number;
+  initialSearch?: string;
 }
 
-export const useUsers = ({ initialPage = 1, initialPerPage = 10 }: UseUsersProps = {}) => {
+export const useUsers = ({
+  initialPage = 1,
+  initialPerPage = 10,
+  initialSearch = '',
+}: UseUsersProps = {}) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
@@ -18,7 +23,7 @@ export const useUsers = ({ initialPage = 1, initialPerPage = 10 }: UseUsersProps
   const [perPage, setPerPage] = useState(initialPerPage);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
 
   const fetchUsers = async () => {
     try {

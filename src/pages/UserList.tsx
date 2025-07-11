@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Table from '../components/common/Table';
 import StatusBadge from '../components/common/StatusBadge';
 import Button from '../components/common/Button';
@@ -20,6 +19,12 @@ const Title = styled.h1`
 
 const UserListPage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = +(searchParams.get('page') || 1);
+  const currentPerPage = +(searchParams.get('per_page') || 10);
+  const currentSearch = searchParams.get('search') || '';
+
   const {
     users,
     loading,
@@ -32,7 +37,41 @@ const UserListPage = () => {
     handlePageChange,
     handlePerPageChange,
     handleSearch,
-  } = useUsers();
+  } = useUsers({
+    initialPage: currentPage,
+    initialPerPage: currentPerPage,
+    initialSearch: currentSearch,
+  });
+
+  // Update URL when values change
+  const updateSearchParams = (updates: Record<string, string | number>) => {
+    const newParams = new URLSearchParams(searchParams);
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, String(value));
+      } else {
+        newParams.delete(key);
+      }
+    });
+
+    setSearchParams(newParams);
+  };
+
+  const handlePageChangeWithUrl = (newPage: number) => {
+    handlePageChange(newPage);
+    updateSearchParams({ page: newPage });
+  };
+
+  const handlePerPageChangeWithUrl = (newPerPage: number) => {
+    handlePerPageChange(newPerPage);
+    updateSearchParams({ per_page: newPerPage, page: 1 });
+  };
+
+  const handleSearchWithUrl = (searchTerm: string) => {
+    handleSearch(searchTerm);
+    updateSearchParams({ search: searchTerm, page: 1 });
+  };
 
   const columns = [
     {
@@ -82,12 +121,12 @@ const UserListPage = () => {
           perPage,
           total,
           totalPages,
-          onPageChange: handlePageChange,
-          onPerPageChange: handlePerPageChange,
+          onPageChange: handlePageChangeWithUrl,
+          onPerPageChange: handlePerPageChangeWithUrl,
         }}
         search={{
           value: search,
-          onChange: handleSearch,
+          onChange: handleSearchWithUrl,
           placeholder: 'Search users...',
         }}
       />
