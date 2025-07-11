@@ -11,39 +11,13 @@ import {
   TableControls,
 } from './Table.styles';
 
+import VirtualizedTable from './VirtualizedTable';
+import TableBody from './TableBody';
 import Pagination from './Pagination';
 import SearchInput from '../SearchInput';
 import Toggle from '../Toggle';
 
-export interface Column<T> {
-  key: string;
-  header: string;
-  render?: (value: any, row: T) => React.ReactNode;
-  width?: string;
-}
-
-export interface TableProps<T> {
-  data: T[];
-  columns: Column<T>[];
-  loading?: boolean;
-  error?: { message: string } | null;
-  pagination?: {
-    page: number;
-    perPage: number;
-    total: number;
-    totalPages: number;
-    showAll?: boolean;
-    onPageChange: (page: number) => void;
-    onPerPageChange: (perPage: number) => void;
-    onShowAllToggle?: (show: boolean) => void;
-  };
-  search?: {
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-    debounceMs?: number;
-  };
-}
+import { TableProps } from './table.types';
 
 const Table = <T extends Record<string, any>>({
   data,
@@ -86,45 +60,39 @@ const Table = <T extends Record<string, any>>({
       <TableWrapper>
         <TableScroll>
           <StyledTable>
-            <TableHead>
-              <tr>
-                {columns.map((column) => (
-                  <Th key={column.key} width={column.width}>
-                    {column.header}
-                  </Th>
-                ))}
-              </tr>
-            </TableHead>
-            <tbody>
-              {loading ? (
-                <LoadingContainer>
-                  <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
-                    Loading...
-                  </Td>
-                </LoadingContainer>
-              ) : data.length === 0 ? (
-                <LoadingContainer>
-                  <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
-                    No data found
-                  </Td>
-                </LoadingContainer>
-              ) : (
-                data.map((row, index) => (
-                  <tr key={index}>
+            {loading ? (
+              <LoadingContainer>
+                <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
+                  Loading...
+                </Td>
+              </LoadingContainer>
+            ) : data.length === 0 ? (
+              <LoadingContainer>
+                <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
+                  No data found
+                </Td>
+              </LoadingContainer>
+            ) : pagination?.showAll ? (
+              <VirtualizedTable data={data} columns={columns} height="calc(100vh - 300px)" />
+            ) : (
+              <>
+                <TableHead>
+                  <tr>
                     {columns.map((column) => (
-                      <Td key={column.key}>
-                        {column.render ? column.render(row[column.key], row) : row[column.key]}
-                      </Td>
+                      <Th key={column.key} width={column.width}>
+                        {column.header}
+                      </Th>
                     ))}
                   </tr>
-                ))
-              )}
-            </tbody>
+                </TableHead>
+                <TableBody data={data} columns={columns} />
+              </>
+            )}
           </StyledTable>
         </TableScroll>
       </TableWrapper>
 
-      {pagination && (
+      {pagination && !pagination.showAll && (
         <Pagination
           page={pagination.page}
           perPage={pagination.perPage}

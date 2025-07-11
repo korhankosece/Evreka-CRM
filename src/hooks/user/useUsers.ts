@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
-
-import { users } from '../data/users';
+import { users } from '../../data/users';
 
 interface UseUsersProps {
   initialPage?: number;
@@ -76,4 +75,4 @@ export const useUsers = ({
     handleSearch,
     handleShowAllToggle,
   };
-};
+}; 
