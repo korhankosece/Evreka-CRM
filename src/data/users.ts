@@ -12,7 +12,7 @@ export const users: User[] = Array.from({ length: 5000 }, () => {
     email: faker.internet.email({ firstName, lastName }),
     role: faker.helpers.arrayElement(['admin', 'user']),
     status: faker.helpers.arrayElement(['active', 'inactive']),
-    createdAt: faker.date.past({ years: 2 }),
+    createdAt: faker.date.past({ years: 2 }).toISOString(),
     coordinates: {
       lat: faker.location.latitude(),
       lng: faker.location.longitude(),

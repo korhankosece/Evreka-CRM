@@ -17,9 +17,10 @@ import {
 } from './UserDetail.styles';
 
 const UserDetailPage = () => {
-  const { userId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { user, loading, error } = useUserDetail(userId);
+
+  const { user, loading, error } = useUserDetail(id);
 
   const handleBackToList = () => {
     navigate('/');

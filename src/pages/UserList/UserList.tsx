@@ -1,17 +1,24 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useSearchParams, useLocation, Outlet } from 'react-router-dom';
 
 import Table from '../../components/common/Table';
 import StatusBadge from '../../components/common/StatusBadge';
 import Button from '../../components/common/Button';
+import AddUserModal from '../../components/user/AddUserModal';
+import Toast from '../../components/common/Toast';
 
 import { useUsers } from '../../hooks';
-import { User } from '../../types';
+import { useUserManagement } from '../../hooks/user';
+import { User, UserRole, UserStatus } from '../../types';
 
-import { PageContainer, PageContent, TableContainer, Title } from './UserList.styles';
+import { PageContainer, PageContent, Header, TableContainer, Title } from './UserList.styles';
 
 const UserList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const currentPage = +(searchParams.get('page') || 1);
   const currentPerPage = +(searchParams.get('per_page') || 10);
@@ -32,6 +39,7 @@ const UserList = () => {
     handlePerPageChange,
     handleSearch,
     handleShowAllToggle,
+    addUser,
   } = useUsers({
     initialPage: currentPage,
     initialPerPage: currentPerPage,
@@ -39,7 +47,10 @@ const UserList = () => {
     initialShowAll: currentShowAll,
   });
 
-  // Update URL when values change
+  const { createUser } = useUserManagement();
+
+  const isAddModalOpen = location.pathname === '/add';
+
   const updateSearchParams = (updates: Record<string, string | number | boolean>) => {
     const newParams = new URLSearchParams(searchParams);
 
@@ -81,6 +92,24 @@ const UserList = () => {
     }
   };
 
+  const handleAddUser = (userData: {
+    name: string;
+    email: string;
+    password: string;
+    role: UserRole;
+    isActive: boolean;
+    coordinates: { lat: number; lng: number };
+  }) => {
+    const newUser = createUser(userData);
+    if (newUser) {
+      addUser(newUser);
+      navigate('/');
+      setShowSuccessToast(true);
+    } else {
+      setShowErrorToast(true);
+    }
+  };
+
   const columns = [
     {
       key: 'name',
@@ -99,7 +128,7 @@ const UserList = () => {
     {
       key: 'status',
       header: 'Status',
-      render: (value: 'active' | 'inactive') => <StatusBadge status={value} text={value} />,
+      render: (value: UserStatus) => <StatusBadge status={value} text={value} />,
     },
     {
       key: 'createdAt',
@@ -119,7 +148,10 @@ const UserList = () => {
   return (
     <PageContainer>
       <PageContent>
-        <Title>Users</Title>
+        <Header>
+          <Title>Users</Title>
+          <Button text="+ Add User" variant="primary" onClick={() => navigate('/add')} />
+        </Header>
         <TableContainer>
           <Table
             data={users}
@@ -144,6 +176,23 @@ const UserList = () => {
           />
         </TableContainer>
       </PageContent>
+
+      {isAddModalOpen && (
+        <AddUserModal isOpen={true} onClose={() => navigate('/')} onSubmit={handleAddUser} />
+      )}
+
+      {showSuccessToast && (
+        <Toast message="User created successfully!" onClose={() => setShowSuccessToast(false)} />
+      )}
+
+      {showErrorToast && (
+        <Toast
+          message="Failed to create user. Email already exists."
+          onClose={() => setShowErrorToast(false)}
+        />
+      )}
+
+      <Outlet />
     </PageContainer>
   );
 };

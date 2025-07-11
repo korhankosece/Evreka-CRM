@@ -1,7 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { Layout } from '../layouts';
-import { UserListPage, UserDetailPage } from '../pages';
+import Layout from '../layouts/default/Layout';
+
+import UserList from '../pages/UserList';
+import UserDetail from '../pages/UserDetail';
 
 export const router = createBrowserRouter([
   {
@@ -9,12 +11,18 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        index: true,
-        element: <UserListPage />,
+        path: '/',
+        element: <UserList />,
+        children: [
+          {
+            path: 'add',
+            element: null,
+          },
+        ],
       },
       {
-        path: 'user/:userId',
-        element: <UserDetailPage />,
+        path: '/user/:id',
+        element: <UserDetail />,
       },
     ],
   },

@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
-import { users } from '../../data/users';
+import { getUserById } from '../../services/user.service';
 
 export const useUserDetail = (userId: string | undefined) => {
-  const user = useMemo(() => {
-    if (!userId) return null;
-    return users.find((u) => u.id === userId) || null;
-  }, [userId]);
+  if (!userId) return { user: null, loading: false, error: { message: 'User not found' } };
+
+  const user = getUserById(userId);
 
   return {
     user,

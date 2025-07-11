@@ -1,5 +1,8 @@
-import { useState, useMemo } from 'react';
-import { users } from '../../data/users';
+import { useState } from 'react';
+
+import { getAllUsers } from '../../services/user.service';
+
+import { User } from '../../types';
 
 interface UseUsersProps {
   initialPage?: number;
@@ -14,25 +17,27 @@ export const useUsers = ({
   initialSearch = '',
   initialShowAll = false,
 }: UseUsersProps = {}) => {
+  const [users, setUsers] = useState(() => getAllUsers());
   const [page, setPage] = useState(initialPage);
   const [perPage, setPerPage] = useState(initialPerPage);
   const [search, setSearch] = useState(initialSearch);
   const [showAll, setShowAll] = useState(initialShowAll);
 
-  // Filter users based on search
-  const filteredUsers = useMemo(() => {
-    if (!search) return users;
+  const addUser = (newUser: User) => {
+    setUsers((prev) => [...prev, newUser]);
+  };
 
-    const searchLower = search.toLowerCase();
-    return users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(searchLower) ||
-        user.email.toLowerCase().includes(searchLower) ||
-        user.role.toLowerCase().includes(searchLower)
-    );
-  }, [search]);
+  const filteredUsers = !search
+    ? users
+    : users.filter((user) => {
+        const searchLower = search.toLowerCase();
+        return (
+          user.name.toLowerCase().includes(searchLower) ||
+          user.email.toLowerCase().includes(searchLower) ||
+          user.role.toLowerCase().includes(searchLower)
+        );
+      });
 
-  // Calculate pagination
   const total = filteredUsers.length;
   const totalPages = Math.ceil(total / perPage);
   const start = (page - 1) * perPage;
@@ -74,5 +79,6 @@ export const useUsers = ({
     handlePerPageChange,
     handleSearch,
     handleShowAllToggle,
+    addUser,
   };
-}; 
+};
