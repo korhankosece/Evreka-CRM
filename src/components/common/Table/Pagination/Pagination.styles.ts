@@ -10,3 +10,8 @@ export const PaginationContainer = styled.div`
 export const PageInfo = styled.span`
   color: ${({ theme }) => theme.colors.text.primary};
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;

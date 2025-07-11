@@ -12,7 +12,7 @@ const StatusBadge = ({ status, text, ...props }: StatusBadgeProps) => {
   const displayText = text || status.charAt(0).toUpperCase() + status.slice(1);
 
   return (
-    <StyledBadge status={status} {...props}>
+    <StyledBadge $status={status} {...props}>
       {displayText}
     </StyledBadge>
   );

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface StyledButtonProps {
-  variant: 'primary' | 'secondary';
+  $variant: 'primary' | 'secondary';
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -12,8 +12,8 @@ export const StyledButton = styled.button<StyledButtonProps>`
   transition: all 0.2s ease-in-out;
   border: none;
 
-  ${({ theme, variant }) =>
-    variant === 'primary'
+  ${({ theme, $variant }) =>
+    $variant === 'primary'
       ? css`
           background-color: ${theme.colors.primary.main};
           color: ${theme.colors.primary.contrastText};

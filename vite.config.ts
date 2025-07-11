@@ -1,18 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { defineConfig } from 'vite'
 
-// https://vitejs.dev/config/
+import react from '@vitejs/plugin-react'
+
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-      },
-    },
-  },
-  // Ensure service worker is copied to the correct location
-  publicDir: 'public',
-});
+})

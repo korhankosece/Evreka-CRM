@@ -1,9 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 
-import { userService } from '../services/users';
-import type { ApiError } from '../services/base';
-
-import type { User } from '../types/user';
+import { users } from '../data/users';
 
 interface UseUsersProps {
   initialPage?: number;
@@ -16,33 +13,29 @@ export const useUsers = ({
   initialPerPage = 10,
   initialSearch = '',
 }: UseUsersProps = {}) => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<ApiError | null>(null);
   const [page, setPage] = useState(initialPage);
   const [perPage, setPerPage] = useState(initialPerPage);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState(initialSearch);
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await userService.getUsers({ page, per_page: perPage, search });
-      setUsers(response.data.users);
-      setTotal(response.data.total);
-      setTotalPages(response.data.totalPages);
-    } catch (err) {
-      setError(err as ApiError);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Filter users based on search
+  const filteredUsers = useMemo(() => {
+    if (!search) return users;
 
-  useEffect(() => {
-    fetchUsers();
-  }, [page, perPage, search]);
+    const searchLower = search.toLowerCase();
+    return users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(searchLower) ||
+        user.email.toLowerCase().includes(searchLower) ||
+        user.role.toLowerCase().includes(searchLower)
+    );
+  }, [search]);
+
+  // Calculate pagination
+  const total = filteredUsers.length;
+  const totalPages = Math.ceil(total / perPage);
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const paginatedUsers = filteredUsers.slice(start, end);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -59,9 +52,9 @@ export const useUsers = ({
   };
 
   return {
-    users,
-    loading,
-    error,
+    users: paginatedUsers,
+    loading: false, // No loading state needed with static data
+    error: null, // No error state needed with static data
     page,
     perPage,
     total,
@@ -70,6 +63,5 @@ export const useUsers = ({
     handlePageChange,
     handlePerPageChange,
     handleSearch,
-    refresh: fetchUsers,
   };
 };

@@ -21,7 +21,7 @@ export default tseslint.config(
   },
   // Special config for build configuration files - placing this first to take precedence
   {
-    files: ['vite.config.ts', 'msw.config.ts'],
+    files: ['vite.config.ts'],
     ...tseslint.configs.recommended,
     languageOptions: {
       parser: tseslint.parser,
@@ -33,7 +33,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['vite.config.ts', 'msw.config.ts'],
+    ignores: ['vite.config.ts'],
     extends: [
       ...compat.extends(
         'plugin:react/recommended',

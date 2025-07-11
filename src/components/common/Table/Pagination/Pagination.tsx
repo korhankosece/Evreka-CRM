@@ -1,4 +1,4 @@
-import { PageInfo, PaginationContainer } from './Pagination.styles';
+import { PageInfo, PaginationContainer, ButtonsContainer } from './Pagination.styles';
 
 import Button from '../../Button';
 import Select from '../../Select';
@@ -46,7 +46,7 @@ const Pagination = ({
           : `${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
       </PageInfo>
 
-      <div>
+      <ButtonsContainer>
         <Button
           text="Previous"
           onClick={() => onPageChange(page - 1)}
@@ -57,7 +57,7 @@ const Pagination = ({
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages || loading}
         />
-      </div>
+      </ButtonsContainer>
     </PaginationContainer>
   );
 };

@@ -10,7 +10,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({ text, variant = 'primary', ...props }: ButtonProps) => {
   return (
-    <StyledButton variant={variant} {...props}>
+    <StyledButton $variant={variant} {...props}>
       {text}
     </StyledButton>
   );
