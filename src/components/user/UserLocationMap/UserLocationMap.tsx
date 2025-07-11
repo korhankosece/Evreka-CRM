@@ -15,7 +15,7 @@ const UserLocationMap = ({ user }: UserLocationMapProps) => {
       <MapContainer
         center={[user.coordinates.lat, user.coordinates.lng]}
         zoom={13}
-        style={{ height: '100%', width: '100%' }}
+        className="leaflet-container"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

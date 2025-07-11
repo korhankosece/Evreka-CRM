@@ -11,7 +11,14 @@ import { useUsers } from '../../hooks';
 import { useUserManagement } from '../../hooks/user';
 import { User, UserRole, UserStatus } from '../../types';
 
-import { PageContainer, PageContent, Header, TableContainer, Title } from './UserList.styles';
+import {
+  PageContainer,
+  PageContent,
+  Header,
+  TableContainer,
+  Title,
+  CapitalizedText,
+} from './UserList.styles';
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -123,7 +130,7 @@ const UserList = () => {
     {
       key: 'role',
       header: 'Role',
-      render: (value: string) => <span style={{ textTransform: 'capitalize' }}>{value}</span>,
+      render: (value: string) => <CapitalizedText>{value}</CapitalizedText>,
     },
     {
       key: 'status',

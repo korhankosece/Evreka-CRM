@@ -6,9 +6,10 @@ import {
   ModalContainer,
   ModalHeader,
   ModalTitle,
+  CloseButton,
   ModalContent,
   ModalFooter,
-  CloseButton,
+  BodyStyle,
 } from './Modal.styles';
 
 export interface ModalProps {
@@ -38,30 +39,33 @@ const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) => {
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.addEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  return createPortal(
-    <ModalOverlay>
-      <ModalContainer ref={modalRef}>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          <CloseButton onClick={onClose}>&times;</CloseButton>
-        </ModalHeader>
-        <ModalContent>{children}</ModalContent>
-        {footer && <ModalFooter>{footer}</ModalFooter>}
-      </ModalContainer>
-    </ModalOverlay>,
-    document.body
+  return (
+    <>
+      <BodyStyle isOpen={isOpen} />
+      {createPortal(
+        <ModalOverlay>
+          <ModalContainer ref={modalRef}>
+            <ModalHeader>
+              <ModalTitle>{title}</ModalTitle>
+              <CloseButton onClick={onClose}>&times;</CloseButton>
+            </ModalHeader>
+            <ModalContent>{children}</ModalContent>
+            {footer && <ModalFooter>{footer}</ModalFooter>}
+          </ModalContainer>
+        </ModalOverlay>,
+        document.body
+      )}
+    </>
   );
 };
 

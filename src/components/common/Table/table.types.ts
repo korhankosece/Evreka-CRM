@@ -1,15 +1,15 @@
 export interface Column<T> {
   key: string;
   header: string;
-  render?: (value: any, row: T) => React.ReactNode;
   width?: string;
+  render?: (value: any, row: T) => React.ReactNode;
 }
 
 export interface TableProps<T> {
   data: T[];
   columns: Column<T>[];
   loading?: boolean;
-  error?: { message: string } | null;
+  error?: Error | null;
   pagination?: {
     page: number;
     perPage: number;
@@ -18,7 +18,7 @@ export interface TableProps<T> {
     showAll?: boolean;
     onPageChange: (page: number) => void;
     onPerPageChange: (perPage: number) => void;
-    onShowAllToggle?: (show: boolean) => void;
+    onShowAllToggle?: () => void;
   };
   search?: {
     value: string;

@@ -9,11 +9,32 @@ export const LayoutContainer = styled.div`
 `;
 
 export const Sidebar = styled.nav`
-  width: 250px;
+  width: 180px;
   background-color: ${({ theme }) => theme.colors.primary.main};
   padding: ${({ theme }) => theme.spacing(2.5)};
   box-shadow: ${({ theme }) => theme.shadows.medium};
   overflow-y: auto;
+`;
+
+export const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
+`;
+
+export const LogoTitle = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(0.5)};
+`;
+
+export const LogoText = styled.span<{ $variant?: 'primary' | 'contrast' }>`
+  color: ${({ theme, $variant }) =>
+    $variant === 'primary' ? theme.colors.success.main : theme.colors.primary.contrastText};
 `;
 
 export const NavList = styled.ul`

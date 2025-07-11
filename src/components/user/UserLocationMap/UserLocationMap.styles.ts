@@ -7,3 +7,8 @@ export const MapWrapper = styled.div`
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.grey[200]};
 `;
+
+export const StyledMapContainer = styled.div`
+  height: 100%;
+  width: 100%;
+`;

@@ -5,10 +5,10 @@ import {
   StyledTable,
   TableHead,
   Th,
-  Td,
   LoadingContainer,
   TableHeader,
   TableControls,
+  CenteredCell,
 } from './Table.styles';
 
 import VirtualizedTable from './VirtualizedTable';
@@ -32,6 +32,47 @@ const Table = <T extends Record<string, any>>({
   }
 
   const showControls = search || (pagination?.onShowAllToggle && !loading);
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <StyledTable>
+          <LoadingContainer>
+            <CenteredCell colSpan={columns.length}>Loading...</CenteredCell>
+          </LoadingContainer>
+        </StyledTable>
+      );
+    }
+
+    if (data.length === 0) {
+      return (
+        <StyledTable>
+          <LoadingContainer>
+            <CenteredCell colSpan={columns.length}>No data found</CenteredCell>
+          </LoadingContainer>
+        </StyledTable>
+      );
+    }
+
+    if (pagination?.showAll) {
+      return <VirtualizedTable data={data} columns={columns} height="calc(100vh - 300px)" />;
+    }
+
+    return (
+      <StyledTable>
+        <TableHead>
+          <tr>
+            {columns.map((column) => (
+              <Th key={column.key} width={column.width}>
+                {column.header}
+              </Th>
+            ))}
+          </tr>
+        </TableHead>
+        <TableBody data={data} columns={columns} />
+      </StyledTable>
+    );
+  };
 
   return (
     <TableContainer>
@@ -58,38 +99,7 @@ const Table = <T extends Record<string, any>>({
       )}
 
       <TableWrapper>
-        <TableScroll>
-          <StyledTable>
-            {loading ? (
-              <LoadingContainer>
-                <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
-                  Loading...
-                </Td>
-              </LoadingContainer>
-            ) : data.length === 0 ? (
-              <LoadingContainer>
-                <Td colSpan={columns.length} style={{ textAlign: 'center' }}>
-                  No data found
-                </Td>
-              </LoadingContainer>
-            ) : pagination?.showAll ? (
-              <VirtualizedTable data={data} columns={columns} height="calc(100vh - 300px)" />
-            ) : (
-              <>
-                <TableHead>
-                  <tr>
-                    {columns.map((column) => (
-                      <Th key={column.key} width={column.width}>
-                        {column.header}
-                      </Th>
-                    ))}
-                  </tr>
-                </TableHead>
-                <TableBody data={data} columns={columns} />
-              </>
-            )}
-          </StyledTable>
-        </TableScroll>
+        <TableScroll>{renderContent()}</TableScroll>
       </TableWrapper>
 
       {pagination && !pagination.showAll && (

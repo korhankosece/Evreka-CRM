@@ -1,6 +1,17 @@
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Td, Th } from './Table.styles';
+
+import {
+  VirtualizedTd,
+  VirtualizedTh,
+  VirtualizedRow,
+  VirtualizedHeaderRow,
+  VirtualizedWrapper,
+  VirtualizedContainer,
+  VirtualizedBodyContainer,
+  VirtualizedCell,
+} from './Table.styles';
+
 import { Column } from './table.types';
 
 interface VirtualizedTableProps<T> {
@@ -21,47 +32,44 @@ const VirtualizedTable = <T extends Record<string, any>>({
   const VirtualizedBody = ({ height, width }: { height: number; width: number }) => {
     const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const row = data[index];
+
       return (
-        <tr style={{ ...style, display: 'flex' }}>
+        <VirtualizedRow style={style}>
           {columns.map((column) => (
-            <Td key={column.key} style={{ flex: column.width ? `0 0 ${column.width}` : 1 }}>
-              {column.render ? column.render(row[column.key], row) : row[column.key]}
-            </Td>
+            <VirtualizedCell key={column.key} width={column.width}>
+              <VirtualizedTd>
+                {column.render ? column.render(row[column.key], row) : row[column.key]}
+              </VirtualizedTd>
+            </VirtualizedCell>
           ))}
-        </tr>
+        </VirtualizedRow>
       );
     };
 
     return (
-      <div style={{ height, width }}>
-        <List height={height} width={width} itemCount={data.length} itemSize={rowHeight}>
-          {Row}
-        </List>
-      </div>
+      <List height={height} width={width} itemCount={data.length} itemSize={rowHeight}>
+        {Row}
+      </List>
     );
   };
 
   return (
-    <>
-      <thead>
-        <tr style={{ display: 'flex' }}>
+    <VirtualizedWrapper>
+      <VirtualizedContainer>
+        <VirtualizedHeaderRow>
           {columns.map((column) => (
-            <Th
-              key={column.key}
-              width={column.width}
-              style={{ flex: column.width ? `0 0 ${column.width}` : 1 }}
-            >
-              {column.header}
-            </Th>
+            <VirtualizedCell key={column.key} width={column.width}>
+              <VirtualizedTh>{column.header}</VirtualizedTh>
+            </VirtualizedCell>
           ))}
-        </tr>
-      </thead>
-      <tbody style={{ display: 'block', height }}>
-        <AutoSizer>
-          {({ height, width }) => <VirtualizedBody height={height} width={width} />}
-        </AutoSizer>
-      </tbody>
-    </>
+        </VirtualizedHeaderRow>
+        <VirtualizedBodyContainer height={height}>
+          <AutoSizer>
+            {({ height, width }) => <VirtualizedBody height={height} width={width} />}
+          </AutoSizer>
+        </VirtualizedBodyContainer>
+      </VirtualizedContainer>
+    </VirtualizedWrapper>
   );
 };
 

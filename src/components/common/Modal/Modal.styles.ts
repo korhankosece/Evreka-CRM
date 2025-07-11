@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -14,42 +14,36 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.default};
+  background: ${({ theme }) => theme.colors.background.paper};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
-  box-shadow: ${({ theme }) => theme.shadows.large};
-  width: 100%;
+  padding: 1.5rem;
   max-width: 500px;
+  width: 100%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  margin: 1rem;
 `;
 
 export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  margin-bottom: 1rem;
 `;
 
 export const ModalTitle = styled.h2`
   margin: 0;
   color: ${({ theme }) => theme.colors.text.primary};
-  font-size: ${({ theme }) => theme.typography.h5.fontSize};
-  font-weight: ${({ theme }) => theme.typography.h5.fontWeight};
 `;
 
 export const CloseButton = styled.button`
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.text.secondary};
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.text.secondary};
   padding: 0.5rem;
-  margin: -0.5rem;
   line-height: 1;
-  transition: color 0.2s ease-in-out;
 
   &:hover {
     color: ${({ theme }) => theme.colors.text.primary};
@@ -57,14 +51,20 @@ export const CloseButton = styled.button`
 `;
 
 export const ModalContent = styled.div`
-  padding: 1.5rem;
+  flex: 1;
   overflow-y: auto;
+  margin: 1rem 0;
 `;
 
 export const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  margin-top: 1rem;
+`;
+
+export const BodyStyle = createGlobalStyle<{ isOpen: boolean }>`
+  body {
+    overflow: ${({ isOpen }) => (isOpen ? 'hidden' : 'unset')};
+  }
 `;

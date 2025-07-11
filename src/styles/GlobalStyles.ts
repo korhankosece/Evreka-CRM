@@ -20,4 +20,9 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.colors.background.default};
     color: ${({ theme }) => theme.colors.text.primary};
   }
+
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+  }
 `;
