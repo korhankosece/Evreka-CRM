@@ -6,16 +6,19 @@ interface UseUsersProps {
   initialPage?: number;
   initialPerPage?: number;
   initialSearch?: string;
+  initialShowAll?: boolean;
 }
 
 export const useUsers = ({
   initialPage = 1,
   initialPerPage = 10,
   initialSearch = '',
+  initialShowAll = false,
 }: UseUsersProps = {}) => {
   const [page, setPage] = useState(initialPage);
   const [perPage, setPerPage] = useState(initialPerPage);
   const [search, setSearch] = useState(initialSearch);
+  const [showAll, setShowAll] = useState(initialShowAll);
 
   // Filter users based on search
   const filteredUsers = useMemo(() => {
@@ -35,7 +38,7 @@ export const useUsers = ({
   const totalPages = Math.ceil(total / perPage);
   const start = (page - 1) * perPage;
   const end = start + perPage;
-  const paginatedUsers = filteredUsers.slice(start, end);
+  const paginatedUsers = showAll ? filteredUsers : filteredUsers.slice(start, end);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -51,17 +54,26 @@ export const useUsers = ({
     setPage(1);
   };
 
+  const handleShowAllToggle = (show: boolean) => {
+    setShowAll(show);
+    if (!show) {
+      setPage(1);
+    }
+  };
+
   return {
     users: paginatedUsers,
-    loading: false, // No loading state needed with static data
-    error: null, // No error state needed with static data
+    loading: false,
+    error: null,
     page,
     perPage,
     total,
     totalPages,
     search,
+    showAll,
     handlePageChange,
     handlePerPageChange,
     handleSearch,
+    handleShowAllToggle,
   };
 };

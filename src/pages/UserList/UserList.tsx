@@ -1,29 +1,49 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Table from '../components/common/Table';
-import StatusBadge from '../components/common/StatusBadge';
-import Button from '../components/common/Button';
+import Table from '../../components/common/Table';
+import StatusBadge from '../../components/common/StatusBadge';
+import Button from '../../components/common/Button';
 
-import { useUsers } from '../hooks';
-import { User } from '../types';
+import { useUsers } from '../../hooks';
+import { User } from '../../types';
 
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.background.default};
+`;
+
+const PageContent = styled.div`
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   padding: 2rem;
 `;
 
 const Title = styled.h1`
-  margin-bottom: 2rem;
+  margin: 0;
   color: ${({ theme }) => theme.colors.text.primary};
 `;
 
-const UserListPage = () => {
+const TableContainer = styled.div`
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+const UserList = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const currentPage = +(searchParams.get('page') || 1);
   const currentPerPage = +(searchParams.get('per_page') || 10);
   const currentSearch = searchParams.get('search') || '';
+  const currentShowAll = searchParams.get('show_all') === 'true';
 
   const {
     users,
@@ -34,21 +54,24 @@ const UserListPage = () => {
     total,
     totalPages,
     search,
+    showAll,
     handlePageChange,
     handlePerPageChange,
     handleSearch,
+    handleShowAllToggle,
   } = useUsers({
     initialPage: currentPage,
     initialPerPage: currentPerPage,
     initialSearch: currentSearch,
+    initialShowAll: currentShowAll,
   });
 
   // Update URL when values change
-  const updateSearchParams = (updates: Record<string, string | number>) => {
+  const updateSearchParams = (updates: Record<string, string | number | boolean>) => {
     const newParams = new URLSearchParams(searchParams);
 
     Object.entries(updates).forEach(([key, value]) => {
-      if (value) {
+      if (value || value === false) {
         newParams.set(key, String(value));
       } else {
         newParams.delete(key);
@@ -71,6 +94,18 @@ const UserListPage = () => {
   const handleSearchWithUrl = (searchTerm: string) => {
     handleSearch(searchTerm);
     updateSearchParams({ search: searchTerm, page: 1 });
+  };
+
+  const handleShowAllToggleWithUrl = (show: boolean) => {
+    handleShowAllToggle(show);
+    if (show) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('page');
+      newParams.set('show_all', 'true');
+      setSearchParams(newParams);
+    } else {
+      updateSearchParams({ show_all: false, page: 1 });
+    }
   };
 
   const columns = [
@@ -110,28 +145,34 @@ const UserListPage = () => {
 
   return (
     <PageContainer>
-      <Title>Users</Title>
-      <Table
-        data={users}
-        columns={columns}
-        loading={loading}
-        error={error}
-        pagination={{
-          page,
-          perPage,
-          total,
-          totalPages,
-          onPageChange: handlePageChangeWithUrl,
-          onPerPageChange: handlePerPageChangeWithUrl,
-        }}
-        search={{
-          value: search,
-          onChange: handleSearchWithUrl,
-          placeholder: 'Search users...',
-        }}
-      />
+      <PageContent>
+        <Title>Users</Title>
+        <TableContainer>
+          <Table
+            data={users}
+            columns={columns}
+            loading={loading}
+            error={error}
+            pagination={{
+              page,
+              perPage,
+              total,
+              totalPages,
+              showAll,
+              onPageChange: handlePageChangeWithUrl,
+              onPerPageChange: handlePerPageChangeWithUrl,
+              onShowAllToggle: handleShowAllToggleWithUrl,
+            }}
+            search={{
+              value: search,
+              onChange: handleSearchWithUrl,
+              placeholder: 'Search users...',
+            }}
+          />
+        </TableContainer>
+      </PageContent>
     </PageContainer>
   );
 };
 
-export default UserListPage;
+export default UserList;

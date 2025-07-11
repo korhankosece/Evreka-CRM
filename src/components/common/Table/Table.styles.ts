@@ -1,22 +1,43 @@
 import styled from 'styled-components';
 
 export const TableContainer = styled.div`
-  background: ${({ theme }) => theme.colors.background.default};
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  box-shadow: ${({ theme }) => theme.shadows.small};
-  padding: 1rem;
-  min-height: 400px;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+`;
+
+export const TableHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+export const TableControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `;
 
 export const TableWrapper = styled.div`
-  width: 100%;
-  overflow-x: auto;
   flex: 1;
+  min-height: 0;
+  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Contains the scrollbar */
+`;
+
+export const TableScroll = styled.div`
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
 
   /* Custom scrollbar styling */
   &::-webkit-scrollbar {
+    width: 8px;
     height: 8px;
   }
 
@@ -37,18 +58,24 @@ export const TableWrapper = styled.div`
 
 export const StyledTable = styled.table`
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
-  margin-bottom: 1rem;
-  min-width: 800px; /* Ensures table doesn't shrink too much on small screens */
+`;
+
+export const TableHead = styled.thead`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: ${({ theme }) => theme.colors.grey[50]};
 `;
 
 export const Th = styled.th<{ width?: string }>`
-  text-align: left;
   padding: 1rem;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.grey[200]};
-  color: ${({ theme }) => theme.colors.text.primary};
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
   width: ${({ width }) => width || 'auto'};
-  white-space: nowrap; /* Prevents header text from wrapping */
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const Td = styled.td`
@@ -58,5 +85,8 @@ export const Td = styled.td`
 `;
 
 export const LoadingContainer = styled.tr`
-  height: 400px;
+  td {
+    padding: 2rem;
+    text-align: center;
+  }
 `;

@@ -9,6 +9,7 @@ export interface PaginationProps {
   total: number;
   totalPages: number;
   loading?: boolean;
+  showAll?: boolean;
   onPageChange: (page: number) => void;
   onPerPageChange: (perPage: number) => void;
 }
@@ -26,6 +27,7 @@ const Pagination = ({
   total,
   totalPages,
   loading = false,
+  showAll = false,
   onPageChange,
   onPerPageChange,
 }: PaginationProps) => {
@@ -37,12 +39,15 @@ const Pagination = ({
           value={perPage}
           onChange={(value) => onPerPageChange(+value)}
           options={PAGE_SIZE_OPTIONS}
+          disabled={showAll}
         />
       </div>
 
       <PageInfo>
         {total === 0
           ? '0'
+          : showAll
+          ? `Showing all ${total} items`
           : `${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
       </PageInfo>
 
@@ -50,12 +55,12 @@ const Pagination = ({
         <Button
           text="Previous"
           onClick={() => onPageChange(page - 1)}
-          disabled={page === 1 || loading}
+          disabled={page === 1 || loading || showAll}
         />
         <Button
           text="Next"
           onClick={() => onPageChange(page + 1)}
-          disabled={page === totalPages || loading}
+          disabled={page === totalPages || loading || showAll}
         />
       </ButtonsContainer>
     </PaginationContainer>
