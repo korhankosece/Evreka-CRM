@@ -1,39 +1,54 @@
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.background.default};
+  height: 100%;
+  width: 100%;
 `;
 
 export const PageContent = styled.div`
+  padding: 2rem;
   flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
+  min-height: 0;
 `;
 
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-export const Title = styled.h1`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.text.primary};
+  margin-bottom: 2rem;
 `;
 
 export const TableContainer = styled.div`
+  background-color: ${({ theme }) => theme.colors.background.paper};
+  border-radius: ${({ theme }) => theme.shape.borderRadius};
+  padding: 1rem;
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
 `;
 
+export const Title = styled.h1`
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0;
+`;
+
 export const CapitalizedText = styled.span`
   text-transform: capitalize;
+`;
+
+export const ViewToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const ViewToggleLabel = styled.span`
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-size: 0.875rem;
 `;

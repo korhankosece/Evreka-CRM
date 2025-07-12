@@ -1,203 +1,129 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams, useLocation, Outlet } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 
-import Table from '../../components/common/Table';
-import StatusBadge from '../../components/common/StatusBadge';
-import Button from '../../components/common/Button';
 import AddUserModal from '../../components/user/AddUserModal';
-import Toast from '../../components/common/Toast';
+import UserTable from '../../components/user/UserTable';
+import VirtualizedCardList from '../../components/user/VirtualizedCardList/VirtualizedCardList';
+import UserListHeader from '../../components/user/UserListHeader/UserListHeader';
+import ToastManager from '../../components/common/ToastManager/ToastManager';
 
-import { useUsers } from '../../hooks';
-import { useUserManagement } from '../../hooks/user';
-import { User, UserRole, UserStatus } from '../../types';
+import { useUsers, useUrlParams, useUserCreation } from '../../hooks';
 
-import {
-  PageContainer,
-  PageContent,
-  Header,
-  TableContainer,
-  Title,
-  CapitalizedText,
-} from './UserList.styles';
+import { PageContainer, PageContent, TableContainer } from './UserList.styles';
 
 const UserList = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [showErrorToast, setShowErrorToast] = useState(false);
-
-  const currentPage = +(searchParams.get('page') || 1);
-  const currentPerPage = +(searchParams.get('per_page') || 10);
-  const currentSearch = searchParams.get('search') || '';
-  const currentShowAll = searchParams.get('show_all') === 'true';
+  const [isTableView, setIsTableView] = useState(true);
+  const { page, perPage, search, showAll, updateParams } = useUrlParams();
 
   const {
     users,
+    allFilteredUsers,
     loading,
     error,
-    page,
-    perPage,
+    page: currentPage,
+    perPage: currentPerPage,
     total,
     totalPages,
-    search,
-    showAll,
+    search: currentSearch,
+    showAll: currentShowAll,
     handlePageChange,
     handlePerPageChange,
     handleSearch,
     handleShowAllToggle,
     addUser,
   } = useUsers({
-    initialPage: currentPage,
-    initialPerPage: currentPerPage,
-    initialSearch: currentSearch,
-    initialShowAll: currentShowAll,
+    initialPage: page,
+    initialPerPage: perPage,
+    initialSearch: search,
+    initialShowAll: showAll,
   });
 
-  const { createUser } = useUserManagement();
-
-  const isAddModalOpen = location.pathname === '/add';
-
-  const updateSearchParams = (updates: Record<string, string | number | boolean>) => {
-    const newParams = new URLSearchParams(searchParams);
-
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value || value === false) {
-        newParams.set(key, String(value));
-      } else {
-        newParams.delete(key);
-      }
-    });
-
-    setSearchParams(newParams);
-  };
+  const {
+    handleAddUser,
+    showSuccessToast,
+    showErrorToast,
+    setShowSuccessToast,
+    setShowErrorToast,
+  } = useUserCreation(addUser);
 
   const handlePageChangeWithUrl = (newPage: number) => {
     handlePageChange(newPage);
-    updateSearchParams({ page: newPage });
+    updateParams({ page: newPage });
   };
 
   const handlePerPageChangeWithUrl = (newPerPage: number) => {
     handlePerPageChange(newPerPage);
-    updateSearchParams({ per_page: newPerPage, page: 1 });
+    updateParams({ per_page: newPerPage, page: 1 });
   };
 
   const handleSearchWithUrl = (searchTerm: string) => {
     handleSearch(searchTerm);
-    updateSearchParams({ search: searchTerm, page: 1 });
+    updateParams({ search: searchTerm, page: 1 });
   };
 
   const handleShowAllToggleWithUrl = (show: boolean) => {
     handleShowAllToggle(show);
     if (show) {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('page');
-      newParams.set('show_all', 'true');
-      setSearchParams(newParams);
+      updateParams({ show_all: true, page: null });
     } else {
-      updateSearchParams({ show_all: false, page: 1 });
+      updateParams({ show_all: false, page: 1 });
     }
   };
 
-  const handleAddUser = (userData: {
-    name: string;
-    email: string;
-    password: string;
-    role: UserRole;
-    isActive: boolean;
-    coordinates: { lat: number; lng: number };
-  }) => {
-    const newUser = createUser(userData);
-    if (newUser) {
-      addUser(newUser);
-      navigate('/');
-      setShowSuccessToast(true);
-    } else {
-      setShowErrorToast(true);
-    }
-  };
-
-  const columns = [
-    {
-      key: 'name',
-      header: 'Name',
-    },
-    {
-      key: 'email',
-      header: 'Email',
-      width: '25%',
-    },
-    {
-      key: 'role',
-      header: 'Role',
-      render: (value: string) => <CapitalizedText>{value}</CapitalizedText>,
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      render: (value: UserStatus) => <StatusBadge status={value} text={value} />,
-    },
-    {
-      key: 'createdAt',
-      header: 'Created At',
-      render: (value: string) => new Date(value).toLocaleDateString(),
-    },
-    {
-      key: 'actions',
-      header: 'Actions',
-      width: '120px',
-      render: (_: any, row: User) => (
-        <Button text="Details" variant="secondary" onClick={() => navigate(`/user/${row.id}`)} />
-      ),
-    },
-  ];
+  const isAddModalOpen = location.pathname === '/add';
 
   return (
     <PageContainer>
       <PageContent>
-        <Header>
-          <Title>Users</Title>
-          <Button text="+ Add User" variant="primary" onClick={() => navigate('/add')} />
-        </Header>
+        <UserListHeader
+          isTableView={isTableView}
+          onViewChange={setIsTableView}
+          onAddUser={() => location.pathname !== '/add' && window.history.pushState({}, '', '/add')}
+        />
         <TableContainer>
-          <Table
-            data={users}
-            columns={columns}
-            loading={loading}
-            error={error}
-            pagination={{
-              page,
-              perPage,
-              total,
-              totalPages,
-              showAll,
-              onPageChange: handlePageChangeWithUrl,
-              onPerPageChange: handlePerPageChangeWithUrl,
-              onShowAllToggle: handleShowAllToggleWithUrl,
-            }}
-            search={{
-              value: search,
-              onChange: handleSearchWithUrl,
-              placeholder: 'Search users...',
-            }}
-          />
+          {isTableView ? (
+            <UserTable
+              users={users}
+              loading={loading}
+              error={error}
+              page={currentPage}
+              perPage={currentPerPage}
+              total={total}
+              totalPages={totalPages}
+              search={currentSearch}
+              showAll={currentShowAll}
+              onPageChange={handlePageChangeWithUrl}
+              onPerPageChange={handlePerPageChangeWithUrl}
+              onShowAllToggle={handleShowAllToggleWithUrl}
+              onSearch={handleSearchWithUrl}
+            />
+          ) : (
+            <VirtualizedCardList
+              users={allFilteredUsers}
+              loading={loading}
+              error={error}
+              search={currentSearch}
+              onSearch={handleSearchWithUrl}
+            />
+          )}
         </TableContainer>
       </PageContent>
 
       {isAddModalOpen && (
-        <AddUserModal isOpen={true} onClose={() => navigate('/')} onSubmit={handleAddUser} />
-      )}
-
-      {showSuccessToast && (
-        <Toast message="User created successfully!" onClose={() => setShowSuccessToast(false)} />
-      )}
-
-      {showErrorToast && (
-        <Toast
-          message="Failed to create user. Email already exists."
-          onClose={() => setShowErrorToast(false)}
+        <AddUserModal
+          isOpen={true}
+          onClose={() => window.history.back()}
+          onSubmit={handleAddUser}
         />
       )}
+
+      <ToastManager
+        successMessage={showSuccessToast ? 'User created successfully!' : undefined}
+        errorMessage={showErrorToast ? 'Failed to create user. Email already exists.' : undefined}
+        onSuccessDismiss={() => setShowSuccessToast(false)}
+        onErrorDismiss={() => setShowErrorToast(false)}
+      />
 
       <Outlet />
     </PageContainer>

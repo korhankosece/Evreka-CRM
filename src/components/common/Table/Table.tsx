@@ -99,7 +99,9 @@ const Table = <T extends Record<string, any>>({
       )}
 
       <TableWrapper>
-        <TableScroll>{renderContent()}</TableScroll>
+        <TableScroll className={pagination?.showAll ? 'virtualized' : ''}>
+          {renderContent()}
+        </TableScroll>
       </TableWrapper>
 
       {pagination && !pagination.showAll && (

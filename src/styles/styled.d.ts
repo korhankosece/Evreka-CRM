@@ -53,6 +53,9 @@ declare module 'styled-components' {
       };
     };
     spacing: (multiplier: number) => string;
+    shape: {
+      borderRadius: string;
+    };
     borderRadius: {
       small: string;
       medium: string;

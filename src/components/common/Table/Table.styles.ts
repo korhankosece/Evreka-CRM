@@ -34,6 +34,14 @@ export const TableScroll = styled.div`
   overflow: auto;
   flex: 1;
   min-height: 0;
+  width: 100%;
+
+  &.virtualized {
+    overflow-y: hidden;
+    overflow-x: auto;
+    min-width: 0;
+    display: flex;
+  }
 
   /* Custom scrollbar styling */
   &::-webkit-scrollbar {
@@ -134,28 +142,8 @@ export const VirtualizedHeaderRow = styled.div`
 
 export const VirtualizedWrapper = styled.div`
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  /* Custom scrollbar styling */
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.grey[100]};
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.grey[300]};
-    border-radius: 4px;
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.grey[400]};
-    }
-  }
+  min-width: 0;
+  flex: 1;
 `;
 
 export const VirtualizedContainer = styled.div`

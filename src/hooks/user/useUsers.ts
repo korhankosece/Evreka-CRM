@@ -67,6 +67,7 @@ export const useUsers = ({
 
   return {
     users: paginatedUsers,
+    allFilteredUsers: filteredUsers,
     loading: false,
     error: null,
     page,

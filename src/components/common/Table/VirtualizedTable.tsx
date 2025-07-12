@@ -22,6 +22,7 @@ interface VirtualizedTableProps<T> {
 }
 
 const ROW_HEIGHT = 50;
+const MIN_TABLE_WIDTH = 800; // Match with StyledTable min-width
 
 const VirtualizedTable = <T extends Record<string, any>>({
   data,
@@ -47,7 +48,12 @@ const VirtualizedTable = <T extends Record<string, any>>({
     };
 
     return (
-      <List height={height} width={width} itemCount={data.length} itemSize={rowHeight}>
+      <List
+        height={height}
+        width={Math.max(width, MIN_TABLE_WIDTH)}
+        itemCount={data.length}
+        itemSize={rowHeight}
+      >
         {Row}
       </List>
     );

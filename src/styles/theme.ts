@@ -56,6 +56,9 @@ const spacing = (multiplier: number) => `${multiplier * 8}px`;
 export const theme: DefaultTheme = {
   colors,
   spacing,
+  shape: {
+    borderRadius: '8px',
+  },
   borderRadius: {
     small: '4px',
     medium: '8px',

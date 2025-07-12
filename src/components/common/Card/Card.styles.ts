@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 export const CardContainer = styled.div`
   background: ${({ theme }) => theme.colors.background.paper};
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  margin-bottom: 24px;
+  border-radius: ${({ theme }) => theme.shape.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.small};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const CardTitle = styled.h2`
