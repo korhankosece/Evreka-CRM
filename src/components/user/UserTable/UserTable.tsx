@@ -63,7 +63,7 @@ const UserTable = ({
     {
       key: 'status',
       header: 'Status',
-      render: (value: UserStatus) => <StatusBadge status={value} text={value} />,
+      render: (value: UserStatus) => <StatusBadge status={value} />,
     },
     {
       key: 'createdAt',

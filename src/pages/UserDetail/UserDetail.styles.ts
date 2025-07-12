@@ -52,3 +52,9 @@ export const ErrorContainer = styled.div`
     min-width: 200px;
   }
 `;
+
+export const DetailCard = styled.div`
+  .card-content {
+    padding: 2rem;
+  }
+`;

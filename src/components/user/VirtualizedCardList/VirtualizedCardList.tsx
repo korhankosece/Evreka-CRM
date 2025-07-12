@@ -15,6 +15,7 @@ import {
   ErrorContainer,
   ListHeader,
   ListContent,
+  WhiteCardWrapper,
 } from './VirtualizedCardList.styles';
 
 interface VirtualizedCardListProps {
@@ -55,7 +56,9 @@ const VirtualizedCardList = ({
             padding: GAP / 2,
           }}
         >
-          <UserCard user={user} />
+          <WhiteCardWrapper>
+            <UserCard user={user} className="card-container" />
+          </WhiteCardWrapper>
         </div>
       );
     },

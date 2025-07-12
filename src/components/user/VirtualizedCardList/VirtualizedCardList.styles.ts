@@ -33,3 +33,9 @@ export const LoadingContainer = styled.div`
 export const ErrorContainer = styled(LoadingContainer)`
   color: ${({ theme }) => theme.colors.error.main};
 `;
+
+export const WhiteCardWrapper = styled.div`
+  .card-container {
+    background: white;
+  }
+`;

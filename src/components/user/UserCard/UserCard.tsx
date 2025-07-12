@@ -17,19 +17,20 @@ import {
 
 interface UserCardProps {
   user: User;
+  className?: string;
 }
 
-const UserCard = ({ user }: UserCardProps) => {
+const UserCard = ({ user, className }: UserCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Card>
+    <Card className={className}>
       <CardContent>
         <UserInfo>
           <UserName>{user.name}</UserName>
           <UserEmail>{user.email}</UserEmail>
           <UserRole>{user.role}</UserRole>
-          <StatusBadge status={user.status} text={user.status} />
+          <StatusBadge status={user.status} />
         </UserInfo>
         <ActionContainer>
           <Button text="Details" variant="secondary" onClick={() => navigate(`/user/${user.id}`)} />

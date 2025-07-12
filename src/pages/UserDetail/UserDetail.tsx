@@ -14,6 +14,7 @@ import {
   Title,
   LoadingMessage,
   ErrorContainer,
+  DetailCard,
 } from './UserDetail.styles';
 
 const UserDetailPage = () => {
@@ -66,10 +67,12 @@ const UserDetailPage = () => {
           <Button text="Back to Users" onClick={handleBackToList} variant="secondary" />
         </Header>
 
-        <Card title="User Information">
-          <UserInfo user={user} />
-          <UserLocationMap user={user} />
-        </Card>
+        <DetailCard>
+          <Card title="User Information" className="card-content">
+            <UserInfo user={user} />
+            <UserLocationMap user={user} />
+          </Card>
+        </DetailCard>
       </PageContent>
     </PageContainer>
   );
