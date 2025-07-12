@@ -41,6 +41,8 @@ export const TableScroll = styled.div`
     overflow-x: auto;
     min-width: 0;
     display: flex;
+    flex: 1;
+    height: 100%;
   }
 
   /* Custom scrollbar styling */
@@ -144,14 +146,22 @@ export const VirtualizedWrapper = styled.div`
   width: 100%;
   min-width: 0;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;
 
 export const VirtualizedContainer = styled.div`
   min-width: 800px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const VirtualizedBodyContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
+  flex: 1;
+  min-height: 0;
 `;
 
 export const VirtualizedCell = styled.div<{ width?: string }>`

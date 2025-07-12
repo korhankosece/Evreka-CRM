@@ -2,7 +2,7 @@ import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 
 import { StyledSearchInput } from './SearchInput.styles';
 
-import { debounce } from '../../../utils/debounce';
+import { debounce } from '../../../utils';
 
 export interface SearchInputProps {
   value: string;

@@ -53,6 +53,7 @@ const VirtualizedTable = <T extends Record<string, any>>({
         width={Math.max(width, MIN_TABLE_WIDTH)}
         itemCount={data.length}
         itemSize={rowHeight}
+        overscanCount={5}
       >
         {Row}
       </List>
