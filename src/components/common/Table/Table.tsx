@@ -48,7 +48,7 @@ const Table = <T extends Record<string, any>>({
       return (
         <StyledTable>
           <LoadingContainer>
-            <CenteredCell colSpan={columns.length}>No data found</CenteredCell>
+            <CenteredCell colSpan={columns.length}>No users found</CenteredCell>
           </LoadingContainer>
         </StyledTable>
       );

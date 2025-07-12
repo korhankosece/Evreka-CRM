@@ -81,14 +81,6 @@ const VirtualizedCardList = ({
     );
   }
 
-  if (users.length === 0) {
-    return (
-      <ErrorContainer>
-        <div>No users found</div>
-      </ErrorContainer>
-    );
-  }
-
   return (
     <ListContent>
       {onSearch && (
@@ -101,34 +93,40 @@ const VirtualizedCardList = ({
           />
         </ListHeader>
       )}
-      <GridContainer>
-        <AutoSizer>
-          {({ height, width }) => {
-            // Calculate how many columns can fit, ensuring at least 1 column
-            const columnCount = Math.max(1, Math.floor((width - GAP) / (MAX_CARD_WIDTH + GAP)));
-            // Calculate the actual card width based on available space
-            const columnWidth = Math.max(
-              MIN_CARD_WIDTH,
-              Math.min(MAX_CARD_WIDTH, (width - GAP * (columnCount + 1)) / columnCount)
-            );
-            const rowCount = Math.ceil(users.length / columnCount);
+      {users.length === 0 ? (
+        <ErrorContainer>
+          <div>No users found</div>
+        </ErrorContainer>
+      ) : (
+        <GridContainer>
+          <AutoSizer>
+            {({ height, width }) => {
+              // Calculate how many columns can fit, ensuring at least 1 column
+              const columnCount = Math.max(1, Math.floor((width - GAP) / (MAX_CARD_WIDTH + GAP)));
+              // Calculate the actual card width based on available space
+              const columnWidth = Math.max(
+                MIN_CARD_WIDTH,
+                Math.min(MAX_CARD_WIDTH, (width - GAP * (columnCount + 1)) / columnCount)
+              );
+              const rowCount = Math.ceil(users.length / columnCount);
 
-            return (
-              <Grid
-                columnCount={columnCount}
-                columnWidth={columnWidth + GAP}
-                height={height}
-                rowCount={rowCount}
-                rowHeight={CARD_HEIGHT + GAP}
-                width={width}
-                itemData={{ columnCount, columnWidth }}
-              >
-                {Cell}
-              </Grid>
-            );
-          }}
-        </AutoSizer>
-      </GridContainer>
+              return (
+                <Grid
+                  columnCount={columnCount}
+                  columnWidth={columnWidth + GAP}
+                  height={height}
+                  rowCount={rowCount}
+                  rowHeight={CARD_HEIGHT + GAP}
+                  width={width}
+                  itemData={{ columnCount, columnWidth }}
+                >
+                  {Cell}
+                </Grid>
+              );
+            }}
+          </AutoSizer>
+        </GridContainer>
+      )}
     </ListContent>
   );
 };

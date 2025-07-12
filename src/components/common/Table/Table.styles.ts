@@ -103,6 +103,7 @@ export const LoadingContainer = styled.tr`
 
 export const CenteredCell = styled(Td)`
   text-align: center;
+  color: ${({ theme }) => theme.colors.error.main};
 `;
 
 // New styled components for virtualized table
