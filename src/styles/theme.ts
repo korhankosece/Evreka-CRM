@@ -56,48 +56,11 @@ const spacing = (multiplier: number) => `${multiplier * 8}px`;
 export const theme: DefaultTheme = {
   colors,
   spacing,
-  shape: {
-    borderRadius: '8px',
-  },
   borderRadius: {
     small: '4px',
     medium: '8px',
-    large: '12px',
-    round: '50%',
   },
   typography: {
-    fontFamily:
-      "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 600,
-      lineHeight: 1.2,
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 600,
-      lineHeight: 1.3,
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-      lineHeight: 1.3,
-    },
-    h4: {
-      fontSize: '1.5rem',
-      fontWeight: 500,
-      lineHeight: 1.4,
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
-      lineHeight: 1.4,
-    },
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 500,
-      lineHeight: 1.4,
-    },
     body1: {
       fontSize: '1rem',
       lineHeight: 1.5,
@@ -106,15 +69,9 @@ export const theme: DefaultTheme = {
       fontSize: '0.875rem',
       lineHeight: 1.5,
     },
-    button: {
-      fontSize: '0.875rem',
-      fontWeight: 500,
-      textTransform: 'uppercase',
-    },
   },
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.1)',
     medium: '0 4px 8px rgba(0,0,0,0.1)',
-    large: '0 8px 16px rgba(0,0,0,0.1)',
   },
 } as const;

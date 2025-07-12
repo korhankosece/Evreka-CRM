@@ -24,7 +24,7 @@ export const Header = styled.div`
 
 export const TableContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background.paper};
-  border-radius: ${({ theme }) => theme.shape.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
   padding: 1rem;
   flex: 1;
   min-height: 0;

@@ -53,47 +53,11 @@ declare module 'styled-components' {
       };
     };
     spacing: (multiplier: number) => string;
-    shape: {
-      borderRadius: string;
-    };
     borderRadius: {
       small: string;
       medium: string;
-      large: string;
-      round: string;
     };
     typography: {
-      fontFamily: string;
-      h1: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      h2: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      h3: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      h4: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      h5: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      h6: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
       body1: {
         fontSize: string;
         lineHeight: number;
@@ -102,16 +66,10 @@ declare module 'styled-components' {
         fontSize: string;
         lineHeight: number;
       };
-      button: {
-        fontSize: string;
-        fontWeight: number;
-        textTransform: string;
-      };
     };
     shadows: {
       small: string;
       medium: string;
-      large: string;
     };
   }
 }

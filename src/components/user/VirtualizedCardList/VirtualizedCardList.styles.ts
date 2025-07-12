@@ -27,7 +27,7 @@ export const LoadingContainer = styled.div`
   height: 100%;
   width: 100%;
   color: ${({ theme }) => theme.colors.text.secondary};
-  font-size: ${({ theme }) => theme.typography.h6.fontSize};
+  font-size: 1rem;
 `;
 
 export const ErrorContainer = styled(LoadingContainer)`

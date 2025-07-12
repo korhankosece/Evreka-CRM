@@ -1,9 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import {
   LayoutContainer,
-  Sidebar,
-  NavList,
-  NavLink,
+  Header,
   MainContent,
   LogoContainer,
   LogoTitle,
@@ -13,21 +11,14 @@ import {
 const Layout = () => {
   return (
     <LayoutContainer>
-      <Sidebar>
+      <Header>
         <LogoContainer>
           <LogoTitle>
             <LogoText $variant="primary">Evreka</LogoText>
             <LogoText>CRM</LogoText>
           </LogoTitle>
         </LogoContainer>
-        <NavList>
-          <li>
-            <NavLink to="/" end>
-              Users
-            </NavLink>
-          </li>
-        </NavList>
-      </Sidebar>
+      </Header>
       <MainContent>
         <Outlet />
       </MainContent>

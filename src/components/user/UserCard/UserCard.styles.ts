@@ -14,8 +14,8 @@ export const UserInfo = styled.div`
 export const UserName = styled.h3`
   margin: 0;
   color: ${({ theme }) => theme.colors.text.primary};
-  font-size: ${({ theme }) => theme.typography.h6.fontSize};
-  font-weight: ${({ theme }) => theme.typography.h6.fontWeight};
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 export const UserEmail = styled.p`
