@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useLocation, Outlet } from 'react-router-dom';
+import { useLocation, Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 
 import AddUserModal from '../../components/user/AddUserModal';
 import UserTable from '../../components/user/UserTable';
@@ -13,8 +12,10 @@ import { PageContainer, PageContent, TableContainer } from './UserList.styles';
 
 const UserList = () => {
   const location = useLocation();
-  const [isTableView, setIsTableView] = useState(true);
-  const { page, perPage, search, showAll, updateParams } = useUrlParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const { page, perPage, search, showAll, isTableView, updateParams } = useUrlParams();
 
   const {
     users,
@@ -71,6 +72,26 @@ const UserList = () => {
     }
   };
 
+  const handleViewChange = (tableView: boolean) => {
+    updateParams({ view: tableView ? 'table' : 'card' });
+  };
+
+  const handleAddUserClick = () => {
+    if (location.pathname !== '/add') {
+      navigate({
+        pathname: '/add',
+        search: searchParams.toString(),
+      });
+    }
+  };
+
+  const handleCloseModal = () => {
+    navigate({
+      pathname: '/',
+      search: searchParams.toString(),
+    });
+  };
+
   const isAddModalOpen = location.pathname === '/add';
 
   return (
@@ -78,8 +99,8 @@ const UserList = () => {
       <PageContent>
         <UserListHeader
           isTableView={isTableView}
-          onViewChange={setIsTableView}
-          onAddUser={() => location.pathname !== '/add' && window.history.pushState({}, '', '/add')}
+          onViewChange={handleViewChange}
+          onAddUser={handleAddUserClick}
         />
         <TableContainer>
           {isTableView ? (
@@ -111,11 +132,7 @@ const UserList = () => {
       </PageContent>
 
       {isAddModalOpen && (
-        <AddUserModal
-          isOpen={true}
-          onClose={() => window.history.back()}
-          onSubmit={handleAddUser}
-        />
+        <AddUserModal isOpen={true} onClose={handleCloseModal} onSubmit={handleAddUser} />
       )}
 
       <ToastManager

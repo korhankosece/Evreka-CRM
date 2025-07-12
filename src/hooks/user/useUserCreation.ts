@@ -32,7 +32,7 @@ export const useUserCreation = (onUserAdded: (user: any) => void): UseUserCreati
     const newUser = createUser(userData);
     if (newUser) {
       onUserAdded(newUser);
-      navigate('/');
+      navigate(-1);
       setShowSuccessToast(true);
     } else {
       setShowErrorToast(true);

@@ -23,7 +23,7 @@ const UserDetailPage = () => {
   const { user, loading, error } = useUserDetail(id);
 
   const handleBackToList = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   if (loading) {
