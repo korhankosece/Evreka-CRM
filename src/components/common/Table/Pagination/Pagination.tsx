@@ -47,8 +47,8 @@ const Pagination = ({
         {total === 0
           ? '0'
           : showAll
-          ? `Showing all ${total} items`
-          : `${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
+            ? `Showing all ${total} items`
+            : `${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
       </PageInfo>
 
       <ButtonsContainer>

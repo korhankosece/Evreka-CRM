@@ -16,7 +16,7 @@ export const useUrlParams = (): UseUrlParamsReturn => {
   const perPage = +(searchParams.get('per_page') || 10);
   const search = searchParams.get('search') || '';
   const showAll = searchParams.get('show_all') === 'true';
-  const isTableView = searchParams.get('view') !== 'card';  // default to table view if not specified
+  const isTableView = searchParams.get('view') !== 'card'; // default to table view if not specified
 
   const updateParams = (updates: Record<string, string | number | boolean | null>) => {
     const newParams = new URLSearchParams(searchParams);

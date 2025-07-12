@@ -167,4 +167,3 @@ export const VirtualizedBodyContainer = styled.div<{ height: string }>`
 export const VirtualizedCell = styled.div<{ width?: string }>`
   flex: ${({ width }) => (width ? `0 0 ${width}` : 1)};
 `;
-
