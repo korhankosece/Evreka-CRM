@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUserManagement } from './index';
 
-import { UserRole } from '../../types';
+import { User, UserRole } from '../../types';
 
 interface UserCreationData {
   name: string;
@@ -22,7 +22,7 @@ interface UseUserCreationReturn {
   setShowErrorToast: (show: boolean) => void;
 }
 
-export const useUserCreation = (onUserAdded: (user: any) => void): UseUserCreationReturn => {
+export const useUserCreation = (onUserAdded: (user: User) => void): UseUserCreationReturn => {
   const navigate = useNavigate();
   const { createUser } = useUserManagement();
   const [showSuccessToast, setShowSuccessToast] = useState(false);

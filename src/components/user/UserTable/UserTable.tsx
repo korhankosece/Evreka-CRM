@@ -58,23 +58,23 @@ const UserTable = ({
     {
       key: 'role',
       header: 'Role',
-      render: (value: string) => <CapitalizedText>{value}</CapitalizedText>,
+      render: (value: unknown) => <CapitalizedText>{String(value)}</CapitalizedText>,
     },
     {
       key: 'status',
       header: 'Status',
-      render: (value: UserStatus) => <StatusBadge status={value} />,
+      render: (value: unknown) => <StatusBadge status={value as UserStatus} />,
     },
     {
       key: 'createdAt',
       header: 'Created At',
-      render: (value: string) => new Date(value).toLocaleDateString(),
+      render: (value: unknown) => new Date(String(value)).toLocaleDateString(),
     },
     {
       key: 'actions',
       header: 'Actions',
       width: '120px',
-      render: (_: any, row: User) => (
+      render: (_: unknown, row: User) => (
         <Button text="Details" variant="secondary" onClick={() => navigate(`/user/${row.id}`)} />
       ),
     },

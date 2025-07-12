@@ -26,6 +26,18 @@ interface VirtualizedCardListProps {
   onSearch?: (term: string) => void;
 }
 
+interface CellData {
+  columnCount: number;
+  columnWidth: number;
+}
+
+interface CellProps {
+  columnIndex: number;
+  rowIndex: number;
+  style: React.CSSProperties;
+  data: CellData;
+}
+
 const MAX_CARD_WIDTH = 300;
 const MIN_CARD_WIDTH = 250;
 const CARD_HEIGHT = 200;
@@ -39,7 +51,7 @@ const VirtualizedCardList = ({
   onSearch,
 }: VirtualizedCardListProps) => {
   const Cell = useCallback(
-    ({ columnIndex, rowIndex, style, data }: any) => {
+    ({ columnIndex, rowIndex, style, data }: CellProps) => {
       const { columnWidth } = data;
       const index = rowIndex * data.columnCount + columnIndex;
       if (index >= users.length) return null;

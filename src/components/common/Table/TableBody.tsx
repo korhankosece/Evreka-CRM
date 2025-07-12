@@ -6,14 +6,16 @@ interface TableBodyProps<T> {
   columns: Column<T>[];
 }
 
-const TableBody = <T extends Record<string, any>>({ data, columns }: TableBodyProps<T>) => {
+const TableBody = <T extends object>({ data, columns }: TableBodyProps<T>) => {
   return (
     <tbody>
       {data.map((row, index) => (
         <tr key={index}>
           {columns.map((column) => (
             <Td key={column.key}>
-              {column.render ? column.render(row[column.key], row) : row[column.key]}
+              {column.render
+                ? column.render((row as Record<string, unknown>)[column.key], row)
+                : String((row as Record<string, unknown>)[column.key] ?? '')}
             </Td>
           ))}
         </tr>

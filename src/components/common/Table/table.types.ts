@@ -1,13 +1,15 @@
-export interface Column<T> {
+export interface Column<T, V = unknown> {
   key: string;
   header: string;
   width?: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: V, row: T) => React.ReactNode;
 }
+
+export type TableColumn<T> = Column<T, unknown>;
 
 export interface TableProps<T> {
   data: T[];
-  columns: Column<T>[];
+  columns: TableColumn<T>[];
   loading?: boolean;
   error?: Error | null;
   pagination?: {

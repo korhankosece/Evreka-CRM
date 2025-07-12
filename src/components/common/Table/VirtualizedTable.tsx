@@ -24,7 +24,7 @@ interface VirtualizedTableProps<T> {
 const ROW_HEIGHT = 50;
 const MIN_TABLE_WIDTH = 800; // Match with StyledTable min-width
 
-const VirtualizedTable = <T extends Record<string, any>>({
+const VirtualizedTable = <T extends object>({
   data,
   columns,
   height,
@@ -39,7 +39,9 @@ const VirtualizedTable = <T extends Record<string, any>>({
           {columns.map((column) => (
             <VirtualizedCell key={column.key} width={column.width}>
               <VirtualizedTd>
-                {column.render ? column.render(row[column.key], row) : row[column.key]}
+                {column.render
+                  ? column.render((row as Record<string, unknown>)[column.key], row)
+                  : String((row as Record<string, unknown>)[column.key] ?? '')}
               </VirtualizedTd>
             </VirtualizedCell>
           ))}

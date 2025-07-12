@@ -19,7 +19,7 @@ import Toggle from '../Toggle';
 
 import { TableProps } from './table.types';
 
-const Table = <T extends Record<string, any>>({
+const Table = <T extends object>({
   data,
   columns,
   loading = false,
